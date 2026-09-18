@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams, useParams, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { socket } from '@/lib/socket';
+import { API_URL } from '@/lib/config';
 
 export default function LiveTicket() {
   const { slug } = useParams();
@@ -14,7 +15,7 @@ export default function LiveTicket() {
 
   const fetchStatus = () => {
     if (!entryId) return;
-    fetch(`http://localhost:3001/api/queue/status/${entryId}`)
+    fetch(`${API_URL}/api/queue/status/${entryId}`)
       .then(res => res.json())
       .then(resData => {
         if (resData.status === 'cancelled' || resData.status === 'seated') {
@@ -37,7 +38,7 @@ export default function LiveTicket() {
   }, [entryId, slug]);
 
   const handleCancel = async () => {
-    await fetch(`http://localhost:3001/api/queue/cancel/${entryId}`, { method: 'POST' });
+    await fetch(`${API_URL}/api/queue/cancel/${entryId}`, { method: 'POST' });
     router.push(`/wait/${slug}`);
   };
 

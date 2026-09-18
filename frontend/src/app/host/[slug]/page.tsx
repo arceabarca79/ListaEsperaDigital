@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { socket } from '@/lib/socket';
+import { API_URL } from '@/lib/config';
 
 const hostHeaders = {
   Authorization: `Bearer ${process.env.NEXT_PUBLIC_HOST_API_KEY || ''}`
@@ -14,7 +15,7 @@ export default function HostView() {
 
   const fetchQueue = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/api/host/queue/${slug}`, { headers: hostHeaders });
+      const response = await fetch(`${API_URL}/api/host/queue/${slug}`, { headers: hostHeaders });
       const data = await response.json();
 
       if (!response.ok) {
@@ -49,7 +50,7 @@ export default function HostView() {
   }, [slug]);
 
   const updateStatus = async (id: string, status: string) => {
-    await fetch(`http://localhost:3001/api/host/entry/${id}/status`, {
+    await fetch(`${API_URL}/api/host/entry/${id}/status`, {
       method: 'POST',
       headers: { ...hostHeaders, 'Content-Type': 'application/json' },
       body: JSON.stringify({ status, restaurantSlug: slug })

@@ -8,12 +8,13 @@ const { v4: uuidv4 } = require('uuid');
 const db = require('./db');
 
 const app = express();
-app.use(cors());
+const CORS_ORIGIN = process.env.CORS_ORIGIN || '*';
+app.use(cors({ origin: CORS_ORIGIN }));
 app.use(express.json());
 
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: { origin: '*' }
+  cors: { origin: CORS_ORIGIN }
 });
 
 const ACTIVE_STATUSES = ['waiting', 'called', 'on_the_way'];
@@ -312,4 +313,4 @@ app.use((error, req, res, next) => {
 });
 
 const PORT = Number(process.env.PORT || 3001);
-server.listen(PORT, () => console.log(`Backend SQLite corriendo en http://localhost:${PORT}`));
+server.listen(PORT, () => console.log(`Backend SQLite corriendo en el puerto ${PORT}`));

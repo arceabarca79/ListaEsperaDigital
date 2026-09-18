@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { API_URL } from '@/lib/config';
 
 export default function JoinWaitlist() {
   const { slug } = useParams();
@@ -11,14 +12,14 @@ export default function JoinWaitlist() {
   const [partySize, setPartySize] = useState(2);
 
   useEffect(() => {
-    fetch(`http://localhost:3001/api/restaurants/${slug}`)
+    fetch(`${API_URL}/api/restaurants/${slug}`)
       .then(res => res.json())
       .then(data => setRestaurant(data));
   }, [slug]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await fetch('http://localhost:3001/api/queue/join', {
+    const res = await fetch(`${API_URL}/api/queue/join`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

@@ -1,13 +1,14 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
+import { API_URL } from '@/lib/config';
 
 export default function DailyReport() {
   const { slug } = useParams();
   const [stats, setStats] = useState<any>(null);
 
   useEffect(() => {
-    fetch(`http://localhost:3001/api/reports/${slug}/today`)
+    fetch(`${API_URL}/api/reports/${slug}/today`)
       .then(res => res.json())
       .then(data => setStats(data));
   }, [slug]);
